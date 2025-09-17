@@ -1,0 +1,54 @@
+body { font-family:devanagari; margin: 20px; }
+h2 { margin-top: 10px; color: darkgreen; text-align: center; }
+h1{ text-align: center; color: darkblue; }
+/* Container for all categories */
+#lists {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 tables in a row */
+  gap: 20px;
+}
+
+/* Each category box */
+.category {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { border: 1px solid #ccc; padding: 6px; text-align: center; font-size: 14px; }
+input[type="number"] { width: 70px; padding: 5px; }
+select { padding: 5px; }
+button { padding: 10px 15px; margin-top: 15px; }
+
+/* Container for all lists */
+#lists {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 tables in one row */
+  gap: 20px;
+ 
+}
+
+/* Category box styling */
+.category {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+  padding: 10px;
+
+}
+#lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+#save-img { 
+  background-color: green; 
+  color: white; 
+  display: block;
+    margin: 20px auto; /* centers horizontally */
+    padding: 10px 20px;
+    font-size: 16px;
+}
