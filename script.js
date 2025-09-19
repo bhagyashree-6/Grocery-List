@@ -318,7 +318,7 @@ function refreshList() {
     // Save only values as Image
 function saveImage() {
   if (!buildSummary()) {
-    alert("⚠️ कृपया योग्य प्रमाण व युनिट भरा.");
+    alert("⚠️ कृपया लाल झालेल्या रिकाम्या जागी योग्य प्रमाण / मापन भरा.");
     return; // stop if any field is missing
   }
 
@@ -336,3 +336,4 @@ function saveImage() {
 
 
     renderLists();
+
