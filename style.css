@@ -1,10 +1,10 @@
-body { font-family:devanagari; margin: 20px; }
+body { font-family:devanagari, 'Mukta', sans-serif; margin: 20px;}
 h2 { margin-top: 10px; color: darkgreen; text-align: center; }
 h1{ text-align: center; color: darkblue; }
 /* Container for all categories */
 #lists {
   display: grid;
-  /*grid-template-columns: repeat(3, 1fr); /*3 tables in a row */
+ /* grid-template-columns: repeat(3, 1fr);  3 tables in a row */
   gap: 20px;
 }
 
@@ -16,7 +16,7 @@ h1{ text-align: center; color: darkblue; }
   background: #f9f9f9;
 }
 
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px;  overflow-x: auto; white-space: nowrap; }
 th, td { border: 1px solid #ccc; padding: 6px; text-align: center; font-size: 14px; }
 input[type="number"] { width: 70px; padding: 5px; }
 select { padding: 5px; }
@@ -25,7 +25,7 @@ button { padding: 10px 15px; margin-top: 15px; }
 /* Container for all lists */
 #lists {
   display: grid;
-  /*grid-template-columns: repeat(3, 1fr); /* 3 tables in one row */
+  /*grid-template-columns: repeat(4, 1fr); 3 tables in one row*/
   gap: 20px;
  
 }
@@ -62,4 +62,3 @@ button { padding: 10px 15px; margin-top: 15px; }
 #refresh:hover {
   background: darkorange;
 }
-
