@@ -199,42 +199,57 @@ const categories = {
     };
 let groceries = JSON.parse(localStorage.getItem("groceries")) || {};
 
-    function renderLists() {
-      const container = document.getElementById("lists");
-      container.innerHTML = "";
+function renderLists() {
+  const container = document.getElementById("lists");
+  //
 
-      for (let category in categories) {
-        container.innerHTML += `<h2># ${category}</h2>`;
-        let table = `<table><thead><tr><th>आयटम</th><th>प्रमाण</th><th>युनिट</th></tr></thead><tbody>`;
-        
-        categories[category].forEach(item => {
-          const entry = (groceries[category] && groceries[category][item]) || { qty: "", unit: "" };
-          let options = units.map(u => 
-            `<option value="${u}" ${entry.unit === u ? "selected" : ""}>${u}</option>`
-          ).join("");
-          table += `
-            <tr>
-              <td>${item}</td>
-              <td><input type="number" value="${entry.qty}" onchange="updateQuantity('${category}','${item}', this.value)" /></td>
-              <td>
-                <select onchange="updateUnit('${category}','${item}', this.value)">
-                  <option value="">Select</option>
-                  ${options}
-                </select>
-              </td>
-            </tr>`;
-        });
-        table += `</tbody></table>`;
-        container.innerHTML += table;
-      }
-    }
+  for (let category in categories) {
+    container.innerHTML += `<h2># ${category}</h2>`;
+    let table = `<table><thead><tr><th>आयटम</th><th>प्रमाण</th><th>मापन</th></tr></thead><tbody>`;
+
+    categories[category].forEach(item => {
+      const entry = (groceries[category] && groceries[category][item]) || { qty: "", unit: "" };
+      let options = units.map(u =>
+        `<option value="${u}" ${entry.unit === u ? "selected" : ""}>${u}</option>`
+      ).join("");
+
+      table += `
+        <tr>
+        <td>${item}</td>
+          <td><input type="number" min="1" value="${entry.qty}"onchange="updateQuantity('${category}','${item}', this.value)" /></td>
+          <td>
+            <select onchange="updateUnit('${category}','${item}', this.value)">
+              <option value=""> </option>
+              ${options}
+            </select>
+          </td>
+        </tr>`;
+    });
+
+    table += `</tbody></table>`;
+    container.innerHTML += table;
+  }
+}
+
+function refreshList() {
+  if (confirm("नक्की ? आधीची संपूर्ण लिस्ट मिटवली जाईल.")) {
+    localStorage.removeItem("groceries"); // clear storage
+    groceries = {}; // reset variable
+    renderLists();  // reload fresh list
+    document.getElementById("summary").innerHTML = ""; // summary साफ
+  }
+}
 
     function updateQuantity(category, item, qty) {
-      if (!groceries[category]) groceries[category] = {};
-      groceries[category][item] = groceries[category][item] || { qty: "", unit: "" };
-      groceries[category][item].qty = qty;
-      localStorage.setItem("groceries", JSON.stringify(groceries));
-    }
+  if (qty < 1) {
+    alert("⚠️ प्रमाण शून्य किंवा निगेटिव्ह असू शकत नाही.");
+    return;
+  }
+  if (!groceries[category]) groceries[category] = {};
+  groceries[category][item] = groceries[category][item] || { qty: "", unit: "" };
+  groceries[category][item].qty = qty;
+  localStorage.setItem("groceries", JSON.stringify(groceries));
+}
 
     function updateUnit(category, item, unit) {
       if (!groceries[category]) groceries[category] = {};
@@ -245,39 +260,79 @@ let groceries = JSON.parse(localStorage.getItem("groceries")) || {};
 
     // Build summary only with entered values
     function buildSummary() {
-      const summary = document.getElementById("summary");
-      summary.innerHTML = "<h1>🛒 किराणा सामानाची यादी</h1>";
+  const summary = document.getElementById("summary");
+  summary.innerHTML = ""; // सुरुवातीला साफ करा
 
-      for (let category in categories) {
-        let itemsAdded = false;
-        let listHTML = `<h2>${category}</h2><ul>`;
+  let hasError = false;
+  let finalHTML = "<h1>🛒 किराणा सामानाची यादी</h1>";
 
-        categories[category].forEach(item => {
-          const entry = groceries[category] && groceries[category][item];
-          if (entry && entry.qty && entry.unit) {
-            listHTML += `<li>${item} : ${entry.qty} ${entry.unit}</li>`;
-            itemsAdded = true;
-          }
-        });
+  for (let category in categories) {
+    let itemsAdded = false;
+    let listHTML = `<h2>${category}</h2><ul>`;
 
-        listHTML += "</ul>";
-        if (itemsAdded) summary.innerHTML += listHTML;
+    categories[category].forEach(item => {
+      const entry = groceries[category] && groceries[category][item];
+
+      // input आणि select elements शोधा
+      const qtyInput = document.querySelector(
+        `input[onchange="updateQuantity('${category}','${item}', this.value)"]`
+      );
+      const unitSelect = document.querySelector(
+        `select[onchange="updateUnit('${category}','${item}', this.value)"]`
+      );
+
+      // जुन्या error classes काढून टाका
+      if (qtyInput) qtyInput.classList.remove("error");
+      if (unitSelect) unitSelect.classList.remove("error");
+
+      if (entry && (entry.qty || entry.unit)) {
+        if (!entry.qty) {
+          if (qtyInput) qtyInput.classList.add("error");
+          hasError = true;
+        }
+        if (!entry.unit) {
+          if (unitSelect) unitSelect.classList.add("error");
+          hasError = true;
+        }
+
+        if (entry.qty && entry.unit) {
+          listHTML += `<li>${item} : ${entry.qty} ${entry.unit}</li>`;
+          itemsAdded = true;
+        }
       }
-    }
+    });
 
+    listHTML += "</ul>";
+    if (itemsAdded) finalHTML += listHTML;
+  }
+
+  // जर एरर असेल तर summary अजिबात तयार करू नये
+  if (hasError) {
+    summary.innerHTML = ""; 
+    return false;
+  }
+
+  summary.innerHTML = finalHTML;
+  return true;
+}
     // Save only values as Image
-    function saveImage() {
-      buildSummary();
-      const summaryDiv = document.getElementById("summary");
-      summaryDiv.style.display = "block"; // show for screenshot
+function saveImage() {
+  if (!buildSummary()) {
+    alert("⚠️ कृपया योग्य प्रमाण व युनिट भरा.");
+    return; // stop if any field is missing
+  }
 
-      html2canvas(summaryDiv, { scale: 2 }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "grocery-list.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        summaryDiv.style.display = "none"; // hide again
-      });
-    }
+  const summaryDiv = document.getElementById("summary");
+  summaryDiv.style.display = "block";
+
+  html2canvas(summaryDiv, { scale: 2 }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "grocery-list.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    summaryDiv.style.display = "none";
+  });
+}
+
 
     renderLists();
