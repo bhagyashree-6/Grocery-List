@@ -30,19 +30,7 @@ button { padding: 10px 15px; margin-top: 15px; }
  
 }
 
-/* Category box styling */
-.category {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #f9f9f9;
-  padding: 10px;
 
-}
-#lists {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
 
 #save-img { 
   background-color: green; 
@@ -51,4 +39,26 @@ button { padding: 10px 15px; margin-top: 15px; }
     margin: 20px auto; /* centers horizontally */
     padding: 10px 20px;
     font-size: 16px;
+}
+#save-img:hover {
+  background: darkgreen;
+}
+
+.error {
+  border: 2px solid black  !important;
+  background-color: red ;
+
+}
+#refresh {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: orange  ;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+#refresh:hover {
+  background: darkorange;
 }
