@@ -264,7 +264,13 @@ function refreshList() {
   summary.innerHTML = ""; // सुरुवातीला साफ करा
 
   let hasError = false;
-  let finalHTML = "<h1>🛒 किराणा सामानाची यादी</h1>";
+  // let finalHTML = "<h1>🛒 किराणा सामानाची यादी</h1>";
+const today = new Date();
+const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+const formattedDate = today.toLocaleDateString("mr-IN", options);
+
+let finalHTML = `<h1>🛒 किराणा सामानाची यादी</h1>
+<p style="font-size:18px; color:grey;">📅 यादी तयार झाल्याची तारीख: ${formattedDate}</p>`;
 
   for (let category in categories) {
     let itemsAdded = false;
@@ -312,7 +318,7 @@ function refreshList() {
     return false;
   }
 
-  summary.innerHTML = finalHTML;
+summary.innerHTML = `<div style="text-align:center; font-family: 'Arial', 'Mukta', sans-serif;">${finalHTML}</div>`;
   return true;
 }
     // Save only values as Image
@@ -336,4 +342,3 @@ function saveImage() {
 
 
     renderLists();
-
