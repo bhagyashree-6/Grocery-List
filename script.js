@@ -208,7 +208,14 @@ const categories = {
     "पेपर फॉईल"
   ]  
     };
-let groceries = JSON.parse(localStorage.getItem("groceries")) || {};
+
+// because काही जुने phones localStorage properly handle करत नाहीत. कधी कधी जुना cache load होतो → blank दिसतं.
+let groceries = {};
+try {
+  groceries = JSON.parse(localStorage.getItem("groceries")) || {};
+} catch(e) {
+  groceries = {};
+}
 
 function renderLists() {
   const container = document.getElementById("lists");
