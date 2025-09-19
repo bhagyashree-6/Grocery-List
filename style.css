@@ -4,7 +4,7 @@ h1{ text-align: center; color: darkblue; }
 /* Container for all categories */
 #lists {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 tables in a row */
+  /*grid-template-columns: repeat(3, 1fr); /*3 tables in a row */
   gap: 20px;
 }
 
@@ -25,7 +25,7 @@ button { padding: 10px 15px; margin-top: 15px; }
 /* Container for all lists */
 #lists {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 tables in one row */
+  /*grid-template-columns: repeat(3, 1fr); /* 3 tables in one row */
   gap: 20px;
  
 }
@@ -62,3 +62,4 @@ button { padding: 10px 15px; margin-top: 15px; }
 #refresh:hover {
   background: darkorange;
 }
+
